@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style> 
+</style>
 <script>
-function find() {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      alert(this.responseText);
+function todo(str) {
+    if (str.length == 0) { 
+        document.getElementById("predef").innerHTML = "";
+        return;
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("predef").innerHTML = this.responseText;
+            }
+        };
+        xmlhttp.open("GET", "request.php?q=" + str, true);
+        xmlhttp.send();
     }
-  };
-  xmlhttp.open("GET", "request.php?q=definition", true);
-  xmlhttp.send();
 }
 </script>
-
+</head>
 <body>
-<button onclick="find()">find</button>
-</body>
-</html>
+<h1>Web Dictionary</h>
+
+
+<form name="app">
+  <input type="text" name="search" placeholder="Search">
+</form>
+    <br />
+<Button onclick=todo(document.forms["app"]["search"].value)>Submit</Button>
+<Button id="getXml" class="btn">Get All Definitions</Button>
+<div id="predef"></div>
