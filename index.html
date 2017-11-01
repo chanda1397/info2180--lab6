@@ -19,10 +19,54 @@ function todo(str) {
         xmlhttp.send();
     }
 }
+window.onload = function () { 
+     var getXmlBtn = document.querySelector('#getXml'); 
+ 
+ 
+     getXmlBtn.addEventListener('click', function() { 
+         var httpRequest = new XMLHttpRequest(); 
+ 
+ 
+         
+         var url = "request.php"; 
+         httpRequest.onreadystatechange = getXml; 
+         httpRequest.open('GET', url); 
+         httpRequest.send(); 
+ 
+ 
+         function getXml() { 
+             if (httpRequest.readyState === XMLHttpRequest.DONE) { 
+               if (httpRequest.status === 200) {
+                 var response = httpRequest.responseXML; 
+                 console.log(response);
+                 var results = document.querySelector('#predef'); 
+                 var people = response.getElementsByTagName('definition'); 
+ 
+ 
+                 var list = document.createElement('ol'); 
+                 results.appendChild(list); 
+                 for (var x = 0; x < people.length; x++) { 
+                     var person = document.createElement('li'); 
+                     var txt = document.createTextNode(people[x].getAttribute('name'));
+                     var ttt =  document.createTextNode(people[x].getAttribute('author'));
+                     var text = document.createTextNode(people[x].childNodes[0].nodeValue); 
+                     person.appendChild(txt)
+                     person.appendChild(ttt)
+                     person.appendChild(text) 
+                     list.appendChild(person); 
+                 } 
+               } else { 
+                 alert('Request error.'); 
+               } 
+             } 
+         } 
+     }); 
+ }; 
 </script>
 </head>
 <body>
-<h1>Web Dictionary</h>
+    <h1></b>Web Dictionary</h1>
+
 
 
 <form name="app">
@@ -32,3 +76,8 @@ function todo(str) {
 <Button onclick=todo(document.forms["app"]["search"].value)>Submit</Button>
 <Button id="getXml" class="btn">Get All Definitions</Button>
 <div id="predef"></div>
+
+
+
+</body>
+</html>
